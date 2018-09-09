@@ -1,16 +1,19 @@
-/********* Trinket M0 Keypad *************/
-/* Support for the DotStar LED was hacked
-in pretty lazily so I'll probably end up
-either replacing this code or adapting the
-touchPad code to work for regular keypads
-since it was written mostly from scratch,
-is much cleaner, and uses the new remapper.
+/************ 7K+ Keypad ****************/
+/* This uses the Trinket M0 code as a base
+and removes all of the SAMD specific stuff
+(mostly just the eeprom commits) and adds
+NKRO support since the arduino keyboard lib
+(which is the only one that has samd support)
+only allows for 6 simultaneous keypresses.
 
-I've done my best to clean this up a bit
-and make it more readable, but it would
-take a bad amount of time to make it
-perfect so this is the best I'm willing
-to do for now.
+I would eventually like to merge all of the
+code for at least the trinket, 7k, and touch
+models. The macropad might still be seperate
+since it does some different stuff with the
+LEDs and has macro pages, which is a lot
+harder to implement on these models, but also
+might be a nice thing to put in the remapper
+eventually. 
 
 -thnikk */
 
