@@ -4,9 +4,15 @@ This code has changed a bit from what I had originally. I started over with the 
 
 I'm considering adding the LED mode and brightness selection to the remapper like what I have on the touchPad. Since the side button isn't quite as necessary on this one, I may just leave it hardcoded as escape and keep the mode and brightness changing with the button but also have it be available in the remapper, just to make it simpler for people that don't want to mess around with holding the button. I could also just make this functionality configurable, which might make more sense and only thought of right now (when in doubt, leave it up to the user?)
 
+## If you're using the Arduino IDE instead of PlatformIO
+
+1) Why?
+
+2) Make sure to install all of the required libraries through the library manager. Check platformio.ini for the full list of lib dependencies.
+
 ### To do:
 - [x] Get NKRO working
 - [x] Get LED effects working and stagger cycle mode with the middle (last) key be colored correctly
 - [ ] Add EEPROM init (conditionally since this isn't required for the m0 as it uses flash as EEPROM and wipes on upload)
-- [ ] Merge this code with the trinket M0 code 
+- [ ] Merge this code with the trinket M0 code
 - [ ] Re-add mouse support

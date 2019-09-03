@@ -13,7 +13,7 @@ since it does some different stuff with the
 LEDs and has macro pages, which is a lot
 harder to implement on these models, but also
 might be a nice thing to put in the remapper
-eventually. 
+eventually.
 
 -thnikk */
 
@@ -426,9 +426,15 @@ void colorChange(){
 bool pressedLock[numkeys];
 void keyboard(){
 
+    /*
   for (byte x=0; x<numkeys; x++){
     if (!bounce[x].read() && pressedLock[x]) { for (byte y=0; y<3; y++) { NKROKeyboard.press(mapping[x][y]); } pressedLock[x] = 0; }
     if (bounce[x].read() && !pressedLock[x]){ for (byte y=0; y<3; y++) { NKROKeyboard.release(mapping[x][y]); } pressedLock[x] = 1; }
+  }
+    */
+  for (byte x=0; x<numkeys; x++){
+    if (!bounce[x].read() && pressedLock[x]) { NKROKeyboard.press(mapping[x][0]); pressedLock[x] = 0; }
+    if (bounce[x].read() && !pressedLock[x]){ NKROKeyboard.release(mapping[x][0]); pressedLock[x] = 1; }
   }
 
 }
