@@ -22,8 +22,11 @@ eventually.
 #include <EEPROM.h>
 // Universal
 #include <Bounce2.h>
-#include <HID-Project.h>
-// #include <Mouse.h>
+#if defined(NONKEY)
+    #include <Keyboard.h>
+#else
+    #include <HID-Project.h>
+#endif
 #include <Adafruit_NeoPixel.h>
 #define numkeys 7
 #if defined rgbw
@@ -144,8 +147,10 @@ void setup() {
   for (int x = 0; x < numkeys; x++) {	for (int  y= 0; y < 3; y++) mapping[x][y] = char(EEPROM.read(40+(x*3)+y)); customWheel[x] = EEPROM.read(30+x); }
   ledMode = EEPROM.read(20); b = EEPROM.read(21);
 
+    #if defined (NONKEY)
+    #else
 	NKROKeyboard.begin();
-
+    #endif
 }
 
 /*
@@ -428,8 +433,13 @@ bool pressedLock[numkeys];
 void keyboard(){
 
   for (byte x=0; x<numkeys; x++){
+    #if defined (NONKEY)
+    if (!bounce[x].read() && pressedLock[x]) { for (byte y=0; y<3; y++) { Keyboard.press(mapping[x][y]); } pressedLock[x] = 0; }
+    if (bounce[x].read() && !pressedLock[x]){ for (byte y=0; y<3; y++) { Keyboard.release(mapping[x][y]); } pressedLock[x] = 1; }
+    #else
     if (!bounce[x].read() && pressedLock[x]) { for (byte y=0; y<3; y++) { NKROKeyboard.press(mapping[x][y]); } pressedLock[x] = 0; }
     if (bounce[x].read() && !pressedLock[x]){ for (byte y=0; y<3; y++) { NKROKeyboard.release(mapping[x][y]); } pressedLock[x] = 1; }
+    #endif
   }
 
 }
@@ -444,7 +454,11 @@ void sideButton(){
   // Release action
   if (bounce[numkeys].read()) {
     // Press and release escape
+    #if defined (NONKEY)
+    if (hold == 1) { Keyboard.press(KEY_ESC); delay(12); Keyboard.release(KEY_ESC); }
+    #else
     if (hold == 1) { NKROKeyboard.press(KEY_ESC); delay(12); NKROKeyboard.release(KEY_ESC); }
+    #endif
     // Change LED mode
     if (hold == 2) {
       	ledMode++;
