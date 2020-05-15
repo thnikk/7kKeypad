@@ -83,29 +83,71 @@ bool version = 0;
 char mapping[numkeys][3];
 
 // Remap code
-byte specialLength = 31; // Number of "special keys"
-String specialKeys[] = {
-  "shift", "ctrl", "super",
-  "alt", "f1", "f2", "f3",
-  "f4", "f5", "f6", "f7",
-  "f8", "f9", "f10", "f11",
-  "f12", "insert",
-  "delete", "backspace",
-  "enter", "home", "end",
-  "pgup", "pgdn", "up",
-  "down", "left", "right",
-  "tab", "escape", "altGr"
-};
-byte specialByte[] = {
-  129, 128, 131, 130,
-  194, 195, 196, 197,
-  198, 199, 200, 201,
-  202, 203, 204, 205,
-  209, 212, 178, 176,
-  210, 213, 211, 214,
-  218, 217, 216, 215,
-  179, 177, 134
-};
+#if defined(NONKEY)
+    byte specialLength = 59; // Number of "special keys"
+    String specialKeys[] = {
+      "shift", "ctrl", "super",
+      "alt", "f1", "f2", "f3",
+      "f4", "f5", "f6", "f7",
+      "f8", "f9", "f10", "f11",
+      "f12", "insert",
+      "delete", "backspace",
+      "enter", "home", "end",
+      "pgup", "pgdn", "up",
+      "down", "left", "right",
+      "tab", "escape", "altGr",
+      "num1", "num2", "num3", "num4",
+      "num5", "num6", "num7",
+      "num8", "num9", "num0",
+      "num/", "num*", "num-",
+      "num+","numEnter","num.",
+      "F13","F14","F15","F16",
+      "F17","F18","F19","F20",
+    "F21","F22","F23","F24"
+    };
+    byte specialByte[] = {
+      129, 128, 131, 130,
+      194, 195, 196, 197,
+      198, 199, 200, 201,
+      202, 203, 204, 205,
+      209, 212, 178, 176,
+      210, 213, 211, 214,
+      218, 217, 216, 215,
+      179, 177, 134, 225,
+      226,227,228,229,
+      230,231,232,233,234,
+      220,221,222,223,224,
+      235,KEY_F13,KEY_F14
+      ,KEY_F15,KEY_F16,KEY_F17
+      ,KEY_F18,KEY_F19,KEY_F20
+      ,KEY_F21,KEY_F22,KEY_F23,
+      KEY_F24
+    };
+#else
+    byte specialLength = 31; // Number of "special keys"
+    String specialKeys[] = {
+      "shift", "ctrl", "super",
+      "alt", "f1", "f2", "f3",
+      "f4", "f5", "f6", "f7",
+      "f8", "f9", "f10", "f11",
+      "f12", "insert",
+      "delete", "backspace",
+      "enter", "home", "end",
+      "pgup", "pgdn", "up",
+      "down", "left", "right",
+      "tab", "escape", "altGr"
+    };
+    byte specialByte[] = {
+      129, 128, 131, 130,
+      194, 195, 196, 197,
+      198, 199, 200, 201,
+      202, 203, 204, 205,
+      209, 212, 178, 176,
+      210, 213, 211, 214,
+      218, 217, 216, 215,
+      179, 177, 134
+    };
+#endif
 
 byte inputBuffer; // Stores specialByte after conversion
 
@@ -161,9 +203,16 @@ void setup() {
 ███████  ██████   ██████  ██
 */
 
+int count=0;
+
 void loop() {
 
+    count++;
+
   if ((millis() - previousMillis) > 1000) { // Check once a second to reduce overhead
+  Serial.print("LPS: ");
+  Serial.println(count);
+  count=0;
     if (Serial && set == 0) { // Run once when serial monitor is opened to avoid flooding the serial monitor
       Serial.println("Please press 0 to enter the serial remapper.");
       set = 1;
